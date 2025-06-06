@@ -1,4 +1,4 @@
-// using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using practice1.Data;
@@ -6,6 +6,7 @@ using practice1.Models;
 
 namespace practice1.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CustomersController : Controller
     {
         private readonly AppDbContext _context;
@@ -35,7 +36,6 @@ namespace practice1.Controllers
         }
 
         // GET: Customers/Create
-        // [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -44,7 +44,6 @@ namespace practice1.Controllers
         // POST: Customers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // [Authorize]
         public async Task<IActionResult> Create([Bind("Id,FullName,Email,PhoneNumber")] Customer customer)
         {
             if (ModelState.IsValid)
@@ -58,7 +57,6 @@ namespace practice1.Controllers
         }
 
         // GET: Customers/Edit/5
-        // [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Customers == null)
@@ -73,7 +71,6 @@ namespace practice1.Controllers
         // POST: Customers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Email,PhoneNumber")] Customer customer)
         {
             if (id != customer.Id)
@@ -100,7 +97,6 @@ namespace practice1.Controllers
         }
 
         // GET: Customers/Delete/5
-        // [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Customers == null)
@@ -116,7 +112,6 @@ namespace practice1.Controllers
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        // [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Customers == null)
