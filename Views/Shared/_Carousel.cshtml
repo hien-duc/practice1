@@ -1,0 +1,40 @@
+@model IEnumerable<practice1.Models.Carousel>
+
+<div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        @{
+            var index = 0;
+            foreach (var item in Model)
+            {
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="@index" class="@(index == 0 ? "active" : "")" aria-current="@(index == 0 ? "true" : "false")" aria-label="Slide @(index + 1)"></button>
+                index++;
+            }
+        }
+    </div>
+
+    <div class="carousel-inner">
+        @{
+            var first = true;
+            foreach (var item in Model.OrderBy(c => c.Order))
+            {
+                <div class="carousel-item @(first ? "active" : "")">
+                    <img src="@(item.ImageUrl ?? "/images/carousel1.png")" class="d-block w-100" alt="@(item.Title ?? "Welcome")" style="height: 400px; object-fit: cover;">
+                    <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px;">
+                        <h5>@(item.Title ?? "Welcome to Our Store")</h5>
+                        <p>@(item.Description ?? "Discover our amazing products.")</p>
+                    </div>
+                </div>
+                first = false;
+            }
+        }
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>

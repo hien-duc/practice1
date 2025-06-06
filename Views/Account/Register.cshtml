@@ -1,0 +1,69 @@
+@model practice1.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+@* 
+    Registration form with Bootstrap styling
+    This form allows new users to create an account with email, full name, and password
+    It includes validation for required fields and password confirmation
+*@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Create Account</h4>
+                </div>
+                <div class="card-body">
+                    @* Form posts to the Register action in AccountController *@
+                    <form asp-action="Register" method="post">
+                        @* Display validation errors at the model level *@
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
+                        @* Email input field with floating label *@
+                        <div class="form-floating mb-3"> 
+                            <input asp-for="Email" class="form-control" id="Email" placeholder="name@example.com" /> 
+                            <label asp-for="Email"></label> 
+                            <span asp-validation-for="Email" class="text-danger"></span> 
+                        </div>
+                        
+                        @* Full name input field with floating label *@
+                        <div class="form-floating mb-3"> 
+                            <input asp-for="Fullname" class="form-control" id="Fullname" placeholder="Full Name" /> 
+                            <label asp-for="Fullname"></label> 
+                            <span asp-validation-for="Fullname" class="text-danger"></span> 
+                        </div>
+                        
+                        @* Password input field with floating label *@
+                        <div class="form-floating mb-3"> 
+                            <input asp-for="Password" class="form-control" type="password" id="Password" placeholder="Password" /> 
+                            <label asp-for="Password"></label> 
+                            <span asp-validation-for="Password" class="text-danger"></span> 
+                        </div>
+                        
+                        @* Confirm password input field with floating label *@
+                        <div class="form-floating mb-3"> 
+                            <input asp-for="ConfirmPassword" class="form-control" type="password" id="ConfirmPassword" placeholder="Confirm Password" /> 
+                            <label asp-for="ConfirmPassword"></label> 
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span> 
+                        </div> 
+                        
+                        @* Submit button *@
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                        
+                        @* Link to login page for existing users *@
+                        <div class="mt-3 text-center"> 
+                            <a asp-action="Login">Already have an account?</a> 
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Include client-side validation scripts *@
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
