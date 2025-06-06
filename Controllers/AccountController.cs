@@ -1,11 +1,13 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using practice1.Models;
 using practice1.Models.ViewModels;
 using practice1.Data;
+using Microsoft.AspNetCore.Http; // Added for session support
 
 namespace practice1.Controllers
 {
@@ -87,6 +89,10 @@ namespace practice1.Controllers
 
             // Sign in the user with cookie authentication
             await HttpContext.SignInAsync("CookieAuth", claimsPrincipal, authProperties);
+            
+            // Store username in session for easy access in views
+            HttpContext.Session.SetString("Username", user.Fullname);
+            
             TempData["SuccessMessage"] = "Login successful! Welcome, " + user.Fullname;
             return RedirectToAction("Index", "Home");
         }
@@ -173,7 +179,12 @@ namespace practice1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            // Use the correct authentication scheme
             await HttpContext.SignOutAsync("CookieAuth");
+            
+            // Clear the session
+            HttpContext.Session.Clear();
+            
             return RedirectToAction("Index", "Home");
         }
 

@@ -10,16 +10,30 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure cookie authentication
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie("CookieAuth", options =>
-    {
-        options.Cookie.Name = "AuthCookie";
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
-        options.ExpireTimeSpan = TimeSpan.FromDays(7);
-        // Set the ClaimsIdentity name type
-        options.ClaimsIssuer = "CookieAuth";
-    });
+builder.Services.AddAuthentication(options => 
+{
+    options.DefaultScheme = "CookieAuth";
+    options.DefaultSignInScheme = "CookieAuth";
+    options.DefaultChallengeScheme = "CookieAuth";
+})
+.AddCookie("CookieAuth", options =>
+{
+    options.Cookie.Name = "AuthCookie";
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    // Set the ClaimsIdentity name type
+    options.ClaimsIssuer = "CookieAuth";
+});
+
+// Add session services
+builder.Services.AddDistributedMemoryCache(); // Required for session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true; // Make the session cookie essential
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -44,6 +58,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession(); // Add session middleware before authentication
 app.UseAuthentication(); // Add authentication middleware
 app.UseAuthorization();
 app.MapControllerRoute(

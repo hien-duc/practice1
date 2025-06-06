@@ -139,3 +139,4 @@ E:\CSE443\practice1\obj\Debug\net8.0\refint\practice1.dll
 E:\CSE443\practice1\obj\Debug\net8.0\practice1.pdb
 E:\CSE443\practice1\obj\Debug\net8.0\practice1.genruntimeconfig.cache
 E:\CSE443\practice1\obj\Debug\net8.0\ref\practice1.dll
+E:\CSE443\practice1\obj\Debug\net8.0\practice1.sourcelink.json
